@@ -162,6 +162,8 @@ public class StageActivity extends AndroidApplication {
 		JumpingSumoInitializer.getInstance().setStageActivity(this);
 
 		SnackbarUtil.showHintSnackbar(this, R.string.hint_stage);
+
+		stageListener.getEmbroideryManager().createDSTFileGenerator(getApplicationContext());
 	}
 
 	private void setupAskHandler() {
@@ -250,6 +252,8 @@ public class StageActivity extends AndroidApplication {
 		} else {
 			pause();
 			stageDialog.show();
+			stageListener.getEmbroideryManager().createDSTFileGenerator(getApplicationContext());
+			stageListener.getEmbroideryManager().createDSTFile();
 		}
 	}
 

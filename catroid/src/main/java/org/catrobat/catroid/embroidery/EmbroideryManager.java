@@ -23,6 +23,7 @@
 
 package org.catrobat.catroid.embroidery;
 
+import android.content.Context;
 import android.graphics.PointF;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class EmbroideryManager {
 	private ArrayList<PointF> stitchPoints;
 	private Lock stitchPointLock;
+	private DSTFileGenerator fileGenerator;
 
 	public EmbroideryManager() {
 		stitchPoints = new ArrayList<>();
@@ -72,5 +74,15 @@ public class EmbroideryManager {
 
 	public void unlockStitchpoints() {
 		stitchPointLock.unlock();
+	}
+
+	public void createDSTFileGenerator(Context context) {
+		fileGenerator = new DSTFileGenerator(context);
+	}
+
+	public void createDSTFile() {
+		if (stitchPoints.size() > 1) {
+			fileGenerator.createDSTFile(stitchPoints);
+		}
 	}
 }

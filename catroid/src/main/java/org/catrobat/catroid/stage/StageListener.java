@@ -139,7 +139,7 @@ public class StageListener implements ApplicationListener {
 	private PenActor penActor;
 	private EmbroideryActor embroideryActor;
 	private EmbroideryManager embroideryManager;
-	private float screenRation;
+	private float screenRatio;
 
 	private List<Sprite> sprites;
 
@@ -180,6 +180,7 @@ public class StageListener implements ApplicationListener {
 	private Map<Sprite, ShowBubbleActor> bubbleActorMap = new HashMap<>();
 
 	StageListener() {
+		embroideryManager = new EmbroideryManager();
 	}
 
 	@Override
@@ -226,8 +227,8 @@ public class StageListener implements ApplicationListener {
 		stage.addActor(penActor);
 		penActor.setZIndex(ZLAYERPENACTOR);
 
-		screenRation = calculateScreenRatio();
-		embroideryActor = new EmbroideryActor(screenRation);
+		screenRatio = calculateScreenRatio();
+		embroideryActor = new EmbroideryActor(screenRatio);
 		stage.addActor(embroideryActor);
 		embroideryActor.setZIndex(ZLAYEREMBROIDERYACTOR);
 
@@ -257,8 +258,6 @@ public class StageListener implements ApplicationListener {
 			collisionPolygonDebugRenderer.setColor(Color.MAGENTA);
 		}
 		FaceDetectionHandler.resumeFaceDetection();
-
-		embroideryManager = new EmbroideryManager();
 	}
 
 	public void cloneSpriteAndAddToStage(Sprite cloneMe) {
@@ -483,7 +482,7 @@ public class StageListener implements ApplicationListener {
 					addPenActor = false;
 				}
 				if (addEmbroideryActor) {
-					embroideryActor = new EmbroideryActor(screenRation);
+					embroideryActor = new EmbroideryActor(screenRatio);
 					stage.addActor(embroideryActor);
 					addEmbroideryActor = false;
 				}
