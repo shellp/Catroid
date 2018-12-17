@@ -57,6 +57,7 @@ import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.devices.raspberrypi.RaspberryPiService;
 import org.catrobat.catroid.drone.jumpingsumo.JumpingSumoDeviceController;
 import org.catrobat.catroid.drone.jumpingsumo.JumpingSumoInitializer;
+import org.catrobat.catroid.embroidery.DSTFileGenerator;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
 import org.catrobat.catroid.nfc.NfcHandler;
@@ -231,6 +232,8 @@ public class StageActivity extends AndroidApplication implements PermissionHandl
 		} else {
 			StageLifeCycleController.stagePause(this);
 			stageDialog.show();
+			DSTFileGenerator fileGenerator = new DSTFileGenerator(this.getCacheDir());
+			fileGenerator.createDSTFile(stageListener.embroideryList);
 		}
 	}
 
