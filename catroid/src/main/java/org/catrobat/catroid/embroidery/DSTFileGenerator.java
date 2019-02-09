@@ -23,15 +23,10 @@
 
 package org.catrobat.catroid.embroidery;
 
-import android.content.res.Resources;
 import android.graphics.PointF;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.common.ScreenModes;
-import org.catrobat.catroid.content.Project;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,6 +47,7 @@ public class DSTFileGenerator {
 	private static final String TAG = DSTFileGenerator.class.getSimpleName();
 	private static final int MAXDISTANCE = 121;
 	private static final int HEADERMAXBYTE = 512;
+	public static final float STEPSIZEINMM = 0.2f;
 	public static final String DST_HEADER_LABEL = "LA:%-15s\n" + (char)0x1A;
 	public static final String DST_HEADER = "ST:%-6d\n" + (char)0x1A + "CO:%-2d\n" + (char)0x1A
 			+ "+X:%-4d\n" + (char)0x1A + "-X:%-4d\n" + (char)0x1A
@@ -132,26 +128,8 @@ public class DSTFileGenerator {
 	}
 
 	private void convertStitchPointsUnit(ArrayList<PointF> stitchPoints) {
-		DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-		Project project = ProjectManager.getInstance().getCurrentProject();
-		Float inchMmFactor = 25.4f;
-		Float dotOneMmFactor = 10.0f;
-		Float aspectRatioMultiplierX = (float) metrics.widthPixels / project.getXmlHeader().getVirtualScreenWidth();
-		Float aspectRatioMultiplierY = (float) metrics.heightPixels / project.getXmlHeader().getVirtualScreenHeight();
-
-		if (project.getScreenMode() == ScreenModes.MAXIMIZE) {
-			if (aspectRatioMultiplierX > aspectRatioMultiplierY) {
-				aspectRatioMultiplierX = aspectRatioMultiplierY;
-			} else {
-				aspectRatioMultiplierY = aspectRatioMultiplierX;
-			}
-		}
-
 		for (PointF stitch: stitchPoints) {
-			PointF stitchUnitMm = new PointF();
-			stitchUnitMm.x = stitch.x * inchMmFactor * dotOneMmFactor * aspectRatioMultiplierX / metrics.densityDpi;
-			stitchUnitMm.y = stitch.y * inchMmFactor * dotOneMmFactor * aspectRatioMultiplierY / metrics.densityDpi;
-			this.stitchPoints.add(stitchUnitMm);
+			this.stitchPoints.add(new PointF(stitch.x * STEPSIZEINMM, stitch.y * STEPSIZEINMM));
 		}
 	}
 
